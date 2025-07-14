@@ -11,7 +11,7 @@ class DataFetcher:
     """Handles data fetching from various APIs"""
     
     def __init__(self):
-        self.fred_api_key = os.getenv("FRED_API_KEY", "your_fred_api_key")
+        self.fred_api_key = os.getenv("FRED_API_KEY", "928bfef823af054db951f38d94f04afe")
         self.fred = Fred(api_key=self.fred_api_key)
         self.coingecko_base_url = "https://api.coingecko.com/api/v3"
         
