@@ -4,14 +4,10 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
 dependencies = [
-    "datetime>=5.5",
     "fredapi>=0.5.2",
     "numpy>=2.3.1",
-    "openpyxl>=3.1.5",
     "pandas>=2.3.1",
     "plotly>=6.2.0",
     "requests>=2.32.4",
-    "scipy>=1.16.0",
-    "seaborn>=0.13.2",
     "streamlit>=1.46.1",
 ]

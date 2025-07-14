@@ -41,12 +41,14 @@ def main():
         index=3
     )
     
-    # Export format
+    # Export format (Excel disabled for cloud deployment)
     export_format = st.sidebar.selectbox(
         "Export Format",
-        ["CSV", "Excel", "JSON", "PDF Report"],
+        ["CSV", "JSON"],
         index=0
     )
+    
+    st.sidebar.info("Excel export temporarily disabled to reduce app size for cloud deployment.")
     
     # Convert date range to days
     range_mapping = {
@@ -124,11 +126,7 @@ def main():
                         st.session_state.csv_files = csv_files
                         st.success("CSV files generated successfully!")
                 
-                elif export_format == "Excel":
-                    if st.button("Generate Excel File", type="primary"):
-                        excel_file = generate_excel_file(export_data)
-                        st.session_state.excel_file = excel_file
-                        st.success("Excel file generated successfully!")
+                # Excel export disabled for cloud deployment
                 
                 elif export_format == "JSON":
                     if st.button("Generate JSON File", type="primary"):
@@ -172,9 +170,6 @@ def main():
                             if export_format == "CSV":
                                 csv_files = generate_csv_files(custom_export_data)
                                 st.session_state.csv_files = csv_files
-                            elif export_format == "Excel":
-                                excel_file = generate_excel_file(custom_export_data)
-                                st.session_state.excel_file = excel_file
                             elif export_format == "JSON":
                                 json_file = generate_json_file(custom_export_data)
                                 st.session_state.json_file = json_file
@@ -194,13 +189,7 @@ def main():
                     mime="text/csv"
                 )
         
-        elif export_format == "Excel" and hasattr(st.session_state, 'excel_file'):
-            st.download_button(
-                label="Download Excel File",
-                data=st.session_state.excel_file,
-                file_name=f"inflation_monster_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
+        # Excel download disabled for cloud deployment
         
         elif export_format == "JSON" and hasattr(st.session_state, 'json_file'):
             st.download_button(
@@ -292,19 +281,7 @@ def generate_csv_files(export_data):
     
     return csv_files
 
-def generate_excel_file(export_data):
-    """Generate Excel file with multiple sheets"""
-    excel_buffer = io.BytesIO()
-    
-    with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
-        for data_name, data in export_data.items():
-            if isinstance(data, pd.DataFrame):
-                # Limit sheet name length
-                sheet_name = data_name[:31]
-                data.to_excel(writer, sheet_name=sheet_name, index=True)
-    
-    excel_buffer.seek(0)
-    return excel_buffer.getvalue()
+# Excel export function removed to reduce app size for cloud deployment
 
 def generate_json_file(export_data):
     """Generate JSON file with all data"""

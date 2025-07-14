@@ -1,0 +1,13 @@
+# Lightweight requirements for cloud deployment (under 1GB RAM)
+streamlit>=1.46.1
+pandas>=2.3.1
+numpy>=2.3.1
+plotly>=6.2.0
+requests>=2.32.4
+fredapi>=0.5.2
+
+# Note: Heavy dependencies removed for cloud deployment:
+# - scipy (100MB+) - replaced with numpy equivalents
+# - seaborn (30MB+) - removed, not essential
+# - openpyxl (20MB+) - Excel export disabled
+# - datetime - built-in Python module, not needed

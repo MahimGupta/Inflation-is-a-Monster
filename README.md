@@ -33,7 +33,7 @@ Inflation Monster is a comprehensive Streamlit-based web application for analyzi
 
 1. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements-cloud.txt
    ```
 
 2. Set up environment variables:
@@ -49,6 +49,17 @@ Inflation Monster is a comprehensive Streamlit-based web application for analyzi
 ## Configuration
 
 The application uses `.streamlit/config.toml` for configuration settings and `.streamlit/secrets.toml` for sensitive information like API keys.
+
+## Cloud Deployment Optimizations
+
+This application has been optimized for cloud deployment with the following changes:
+
+- **Removed heavy dependencies**: `scipy`, `seaborn`, `openpyxl` (saved ~150MB)
+- **Replaced scipy.stats** with lightweight numpy equivalents for correlation calculations
+- **Disabled Excel export** to remove openpyxl dependency
+- **Removed datetime dependency** (built-in Python module)
+- **Memory usage**: Optimized to stay under 1GB RAM usage
+- **Streamlit Cloud compatible**: All features work within cloud platform limits
 
 ## API Keys
 

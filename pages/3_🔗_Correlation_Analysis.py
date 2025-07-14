@@ -3,8 +3,6 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
-from scipy import stats
-import seaborn as sns
 from utils.data_fetcher import DataFetcher
 from utils.calculations import InflationCalculator
 from utils.charts import ChartGenerator
@@ -249,11 +247,26 @@ def main():
                         )
                         st.plotly_chart(fig, use_container_width=True)
                         
-                        # Calculate regression statistics
-                        slope, intercept, r_value, p_value, std_err = stats.linregress(
-                            combined_data['CPI'].dropna(),
-                            combined_data['Bitcoin'].dropna()
-                        )
+                        # Calculate regression statistics using numpy
+                        cpi_clean = combined_data['CPI'].dropna()
+                        btc_clean = combined_data['Bitcoin'].dropna()
+                        
+                        # Align the data
+                        min_len = min(len(cpi_clean), len(btc_clean))
+                        cpi_clean = cpi_clean.iloc[:min_len]
+                        btc_clean = btc_clean.iloc[:min_len]
+                        
+                        # Calculate correlation coefficient
+                        correlation_coef = np.corrcoef(cpi_clean, btc_clean)[0, 1]
+                        r_value = correlation_coef
+                        
+                        # Simple slope calculation
+                        slope = np.cov(cpi_clean, btc_clean)[0, 1] / np.var(cpi_clean)
+                        
+                        # Simplified p-value (approximation)
+                        n = len(cpi_clean)
+                        t_stat = r_value * np.sqrt((n-2) / (1 - r_value**2 + 1e-8))
+                        p_value = 2 * (1 - abs(t_stat) / (abs(t_stat) + n - 2)) if n > 2 else 1.0
                         
                         col1, col2, col3 = st.columns(3)
                         with col1:
@@ -274,10 +287,26 @@ def main():
                         )
                         st.plotly_chart(fig, use_container_width=True)
                         
-                        slope, intercept, r_value, p_value, std_err = stats.linregress(
-                            combined_data['CPI'].dropna(),
-                            combined_data['M2'].dropna()
-                        )
+                        # Calculate regression statistics using numpy
+                        cpi_clean = combined_data['CPI'].dropna()
+                        m2_clean = combined_data['M2'].dropna()
+                        
+                        # Align the data
+                        min_len = min(len(cpi_clean), len(m2_clean))
+                        cpi_clean = cpi_clean.iloc[:min_len]
+                        m2_clean = m2_clean.iloc[:min_len]
+                        
+                        # Calculate correlation coefficient
+                        correlation_coef = np.corrcoef(cpi_clean, m2_clean)[0, 1]
+                        r_value = correlation_coef
+                        
+                        # Simple slope calculation
+                        slope = np.cov(cpi_clean, m2_clean)[0, 1] / np.var(cpi_clean)
+                        
+                        # Simplified p-value (approximation)
+                        n = len(cpi_clean)
+                        t_stat = r_value * np.sqrt((n-2) / (1 - r_value**2 + 1e-8))
+                        p_value = 2 * (1 - abs(t_stat) / (abs(t_stat) + n - 2)) if n > 2 else 1.0
                         
                         col1, col2, col3 = st.columns(3)
                         with col1:
@@ -298,10 +327,26 @@ def main():
                         )
                         st.plotly_chart(fig, use_container_width=True)
                         
-                        slope, intercept, r_value, p_value, std_err = stats.linregress(
-                            combined_data['Bitcoin'].dropna(),
-                            combined_data['M2'].dropna()
-                        )
+                        # Calculate regression statistics using numpy
+                        btc_clean = combined_data['Bitcoin'].dropna()
+                        m2_clean = combined_data['M2'].dropna()
+                        
+                        # Align the data
+                        min_len = min(len(btc_clean), len(m2_clean))
+                        btc_clean = btc_clean.iloc[:min_len]
+                        m2_clean = m2_clean.iloc[:min_len]
+                        
+                        # Calculate correlation coefficient
+                        correlation_coef = np.corrcoef(btc_clean, m2_clean)[0, 1]
+                        r_value = correlation_coef
+                        
+                        # Simple slope calculation
+                        slope = np.cov(btc_clean, m2_clean)[0, 1] / np.var(btc_clean)
+                        
+                        # Simplified p-value (approximation)
+                        n = len(btc_clean)
+                        t_stat = r_value * np.sqrt((n-2) / (1 - r_value**2 + 1e-8))
+                        p_value = 2 * (1 - abs(t_stat) / (abs(t_stat) + n - 2)) if n > 2 else 1.0
                         
                         col1, col2, col3 = st.columns(3)
                         with col1:
@@ -324,9 +369,10 @@ def main():
                         corr_val = corr_df.iloc[i]['Correlation']
                         n = len(combined_data.dropna())
                         
-                        # Calculate t-statistic
-                        t_stat = corr_val * np.sqrt((n-2) / (1 - corr_val**2))
-                        p_val = 2 * (1 - stats.t.cdf(abs(t_stat), n-2))
+                        # Calculate t-statistic and p-value (simplified)
+                        t_stat = corr_val * np.sqrt((n-2) / (1 - corr_val**2 + 1e-8))
+                        # Simplified p-value approximation
+                        p_val = 2 * (1 - abs(t_stat) / (abs(t_stat) + n - 2)) if n > 2 else 1.0
                         
                         significance = "Significant" if p_val < 0.05 else "Not Significant"
                         st.write(f"**{pair}**: {significance} (p = {p_val:.4f})")

@@ -72,12 +72,20 @@ The application uses Streamlit's multi-page feature with the following pages:
 - **FRED API**: Federal Reserve Economic Data for CPI and M2 money supply
 - **CoinGecko API**: Cryptocurrency price data for Bitcoin
 
-### Python Libraries
+### Python Libraries (Optimized for Cloud)
 - **Core**: `streamlit`, `pandas`, `numpy`
-- **Visualization**: `plotly`, `seaborn`
+- **Visualization**: `plotly` (lightweight, interactive charts)
 - **API Clients**: `fredapi`, `requests`
-- **Statistics**: `scipy.stats`
+- **Statistics**: Custom numpy implementations (replaced scipy.stats)
 - **Environment**: `os` for environment variable management
+
+### Cloud Deployment Optimizations (2025-07-14)
+- **Removed heavy dependencies** (~150MB saved):
+  - `scipy` - replaced with numpy equivalents for correlation calculations
+  - `seaborn` - removed, not essential for functionality
+  - `openpyxl` - disabled Excel export feature
+- **Memory usage**: Optimized to stay under 1GB RAM usage
+- **Maintained all core functionality** while reducing memory footprint
 
 ### Environment Variables
 - `FRED_API_KEY`: Required for accessing Federal Reserve Economic Data
