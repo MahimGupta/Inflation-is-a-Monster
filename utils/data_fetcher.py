@@ -11,7 +11,12 @@ class DataFetcher:
     """Handles data fetching from various APIs"""
     
     def __init__(self):
-        self.fred_api_key = os.getenv("FRED_API_KEY", "928bfef823af054db951f38d94f04afe")
+        # Try to get API key from Streamlit secrets first, then environment variable
+        try:
+            self.fred_api_key = st.secrets.get("FRED_API_KEY", os.getenv("FRED_API_KEY", "928bfef823af054db951f38d94f04afe"))
+        except:
+            self.fred_api_key = os.getenv("FRED_API_KEY", "928bfef823af054db951f38d94f04afe")
+        
         self.fred = Fred(api_key=self.fred_api_key)
         self.coingecko_base_url = "https://api.coingecko.com/api/v3"
         
