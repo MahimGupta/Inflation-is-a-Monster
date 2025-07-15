@@ -1,7 +1,7 @@
 # Lightweight requirements for cloud deployment (under 1GB RAM)
 streamlit>=1.46.1
 pandas>=2.3.1
-numpy>=2.3.1
+numpy==1.24.3
 plotly>=6.2.0
 requests>=2.32.4
 fredapi>=0.5.2
